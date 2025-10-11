@@ -1,0 +1,46 @@
+# =======================================
+# Node.js / Express Server Git Ignore
+# =======================================
+
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Build & Temp Files
+dist/
+build/
+.tmp/
+.cache/
+coverage/
+
+# Uploads / Files
+uploads/
+public/uploads/
+
+# Editor / System
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Test Output
+coverage/
+jest-cache/
