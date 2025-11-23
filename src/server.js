@@ -26,18 +26,20 @@ connectDB();
 // Middleware
 app.use(express.json());
 
+
 // Routes
 import authRouter from "./routes/auth.routes.js";
+import sessionRouter from "./routes/sesstion.routes.js";
+
 app.use("/api/auth", authRouter);
-// app.use("/api/sessions", sessionRouter);
+app.use("/api/sessions", sessionRouter);
 // app.use("/api/questions", questionsRouter);
 
 // app.use("/api/ai/generate-questions", protect, generateInterviewQuestions);
 // app.use("/api/ai/generate-explanation", protect, generateConceptExplanation);
 
 // Serve uploads folder
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 // Start server
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
