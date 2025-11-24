@@ -39,7 +39,6 @@ const createSession = async (req, res) => {
 // @access Private
 const getMySessions = async (req, res) => {
   try {
-    console.log(req.user._id);
     const session = await Session.find({ user: req.user._id })
       .sort({ createdAt: -1 })
       .populate("questions");
