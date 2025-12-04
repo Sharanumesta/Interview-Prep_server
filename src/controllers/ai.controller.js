@@ -1,13 +1,13 @@
 import dotenv from "dotenv";
 dotenv.config();
-import { GoogleGenAI } from "@google/genai";
+import Groq from "groq-sdk";
 import {
   questionAnswerPrompt,
   conceptExplainPrompt,
 } from "../utils/prompts.js";
 
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
+const ai = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
 });
 
 // @desc Generate interview question and answers using gemini
@@ -16,7 +16,6 @@ const ai = new GoogleGenAI({
 const generateInterviewQuestions = async (req, res) => {
   try {
     const { role, experience, topicsToFocus, numberOfQuestions } = req.body;
-
     if (!role || !experience || !topicsToFocus || !numberOfQuestions) {
       return res.status(400).json({ message: "Missing required fields" });
     }
@@ -28,12 +27,12 @@ const generateInterviewQuestions = async (req, res) => {
       numberOfQuestions
     );
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
-      contents: prompt,
+    const response = await ai.chat.completions.create({
+      model: "moonshotai/kimi-k2-instruct-0905",
+      messages: [{ role: "user", content: prompt }]
     });
 
-    let rawText = response.text;
+    let rawText = response.choices[0].message.content;
 
     // Cleanup fenced code blocks
     const cleanedText = rawText
@@ -63,12 +62,12 @@ const generateConceptExplanation = async (req, res) => {
     if (!question)
       return res.status(200).json({ message: "Missing required fields" });
     const prompt = conceptExplainPrompt(question);
-    const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
-      contents: prompt,
-    });  
+    const response = await ai.chat.completions.create({
+      model: "moonshotai/kimi-k2-instruct-0905",
+      messages: [{ role: "user", content: prompt }]
+    });
 
-    let rawText = response.text;
+    let rawText = response.choices[0].message.content;
     // Cleanup fenced code blocks
     const cleanedText = rawText
       .replace(/```json/g, "") // remove string json
